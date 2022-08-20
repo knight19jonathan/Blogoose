@@ -167,10 +167,39 @@ const genRandomIndex = (arr) => Math.floor(Math.random() * arr.length);
 
 const getRandomWord = () => `${lorum[genRandomIndex(lorum)]}`;
 
-const getRandomPost = (words) => {
-    let post = '';
+const getRandomThought = (words) => {
+    let thought = '';
     for (let i = 0; i < words; i++) {
-        post += ` ${getRandomWord()}`;
+        thought += ` ${getRandomWord()}`;
     }
-    return post;
+    return thought;
 };
+
+
+// Get a random item given an array
+const getRandomArrItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+// Gets a random full name
+const getRandomName = () =>
+  `${getRandomArrItem(names)} ${getRandomArrItem(names)}`;
+
+// Function to generate random comments given a number (ex. 10 comments === getRandomReactions(10))
+const getRandomReactions = (int) => {
+  const results = [];
+  for (let i = 0; i < int; i++) {
+    results.push({
+      text: getRandomArrItem(reactions),
+      username: getRandomName().split(' ')[0],
+    });
+  }
+  return results;
+};
+
+module.exports = {
+    getRandomReactions,
+    getRandomThought,
+    getRandomName,
+    getRandomWord,
+    getRandomArrItem,
+    genRandomIndex,
+};  // Export the functions so they can be used in other files
