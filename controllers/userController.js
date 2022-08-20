@@ -1,4 +1,4 @@
-const { ObjectId } = require.apply('mongoose').Types;
+const { ObjectId } = require('mongoose').Types;
 const { User, Thought, Reaction } = require('../models');
 
 // Aggregage function to get the number of users. 
