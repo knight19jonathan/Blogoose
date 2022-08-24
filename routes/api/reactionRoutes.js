@@ -8,10 +8,10 @@ const {
 } = require('../../controllers/reactionController');
 
 // /api/reactions
-router.route('/').get(getReactions).post(createReaction);
+router.route('/').get(getReactions);
 
 // /api/reactions/:id
 
-router.route('/:id').get(getSingleReaction).put(updateReaction).delete(deleteReaction);
+router.route('/:id').get(getSingleReaction).put(updateReaction).delete(deleteReaction).post(createReaction);
 
 module.exports = router;

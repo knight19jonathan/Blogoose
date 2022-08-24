@@ -53,7 +53,17 @@ module.exports = {
 
     createThought(req, res) {
         Thought.create(req.body)
-            .then(thought => res.json(thought))
+            .then(thought => {
+                return User.findOneAndUpdate(
+                    { _id: req.body.userId },
+                    { $push: { thoughts: thought.id } },
+                    { new: true }
+                ).then(user => 
+                    !user
+                        ? res.status(404).json({ message: 'No user found with this id!' })
+                        : res.json(thought)
+                )
+            })
             .catch(err => res.status(400).json(err));
     },
 
@@ -84,7 +94,7 @@ module.exports = {
 // add reaction to thought
     addReaction(req, res) {
         Thought.findOneAndUpdate(
-            { _id: req.params.id },
+            { _id: req.params.thoughtId },
             { $push: { reactions: req.body } },
             { new: true, runValidators: true }
         )

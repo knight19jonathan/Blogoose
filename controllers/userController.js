@@ -38,15 +38,26 @@ module.exports = {
     // get one user by id
     getSingleUser(req, res) {
         User.findOne({ _id: req.params.id })
+            .populate({
+                path: 'thoughts',
+                select: '-__v'
+            })
+            .populate({
+                path: 'friends',
+                select: '-__v'
+            })  
             .select('-__v')
             .then(async (user) =>
-               !user
-                ? res.status(404).json({ message: 'No user found with this id!' })
-                : res.json({
-                    user,
-                    userCount: await userCount(),
-                })
+                !user
+                    ? res.status(404).json({ message: 'No user found with this id!' })
+                    : res.json({
+                        user,
+                        userCount: await userCount(),
+                    })
             )
+        
+               
+            
             .catch(err => {
                 console.log(err);
                 return res.status(500).json(err);
@@ -96,19 +107,20 @@ module.exports = {
         console.log('You are adding a friend!');
         console.log(req.body);
         User.findOneAndUpdate(
-            { _id: req.params.id },
+            { _id: req.params.userId },
             { $addToSet: { friends: req.body.friendId } },
-            { runValidators: true, new: true }
+            { new: true, runValidators: true }
         )
+        .then(user => res.json(user))
         .catch((err) => res.status(500).json(err));
     },
 
     // remove friend
     deleteFriend(req, res) {
         User.findOneAndUpdate(
-            { _id: req.params.id },
+            { _id: req.params.userId },
             { $pull: { friends: req.body.friendId } },
-            { runValidators: true, new: true }
+            {  new: true, runValidators: true }
         )
         .then((user) =>
             !user
