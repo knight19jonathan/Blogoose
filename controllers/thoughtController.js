@@ -128,6 +128,18 @@ module.exports = {
             })
             .catch(err => res.status(400).json(err));
     },
+
+    // delete all thoughts
+    deleteAllThoughts(req, res) {
+        Thought.deleteMany({})
+            .then(thoughts => {
+                if (!thoughts) {
+                    return res.status(404).json({ message: 'No thoughts found!' });
+                }
+                return res.json(thoughts);
+            })
+            .catch(err => res.status(400).json(err));
+    },
 };
 
 // Language: javascript

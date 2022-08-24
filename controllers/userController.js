@@ -78,7 +78,6 @@ module.exports = {
             : Thought.deleteMany(
                 { username: user.username },
                 { $pull: { users: req.params.id } },
-                { new: true }
                 )
             )
             .then((thought) =>
